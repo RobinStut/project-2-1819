@@ -28,6 +28,7 @@
     "nodemon": "^1.18.10",
     "oba-wrapper": "github:maanlamp/oba-wrapper",
     "path": "^0.12.7",
+    "striptags": "^3.1.1",
     "uglify-js": "^3.4.10"
   }
 }
