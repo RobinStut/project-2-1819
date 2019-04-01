@@ -27,7 +27,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // app.get("/", datafetch);
 app.get("/", (req, res) =>
-  res.render("pages/lijstSamenstellen", {
+  res.render("pages/index", {
     data: null
   })
 );
