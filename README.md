@@ -6,12 +6,24 @@ Op maandag 1 april is er een briefing gegeven over de website van ![CMD amsterda
 
 ### Enkele mogelijke verbeterpunten:
 
-- ![imageBlock](imageBlock.png)
-  Afbeeldingen worden allemaal ingeladen, zonder dat ze al te zien zijn. Hierdoor wordt er langer geladen.
-- ![nolabel](nolabel.png)
-- ![pbutton](pbutton.png)
-  Labels zijn niet gekoppeld aan de input velden, waardoor screenreaders moeite hebben met invullen. Ook buttons worden door screenreaders herkent als normale tekst.
-- ![button](button.png)
-  De belangrijkste knop op de pagina's zijn alleen zichtbaar als er nog niet gescrolled is.
-- ![audits](audits.png)
-  De resultaten van de performance check van Autits geeft aan dat er op meerdere vlakken veel verbeterd kan worden.
+![imageBlock](imageBlock.png)
+
+<pre>
+Afbeeldingen worden allemaal ingeladen, zonder dat ze al te zien zijn. Hierdoor wordt er langer geladen.
+</pre>
+
+![nolabel](nolabel.png) ![pbutton](pbutton.png)
+
+<pre> Labels zijn niet gekoppeld aan de input velden, waardoor screenreaders moeite hebben met invullen. Ook buttons worden door screenreaders herkent als normale tekst.
+</pre>
+
+![button](button.png)
+
+ <pre>De belangrijkste knop op de pagina's zijn alleen zichtbaar als er nog niet gescrolled is.
+ </pre>
+
+![audits](audits.png)
+
+ <pre>
+ De resultaten van de performance check van Autits geeft aan dat er op meerdere vlakken veel verbeterd kan worden.
+ </pre>
