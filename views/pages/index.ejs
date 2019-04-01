@@ -8,61 +8,6 @@
 <body>
   <% include ../partials/nav %>
 
-  <form class="search" action="/" method="POST" enctype="application/x-www-form-urlencoded">
-    <fieldset>
-      <legend></legend>
-      <input value="Madelief" type="input" id="searchValue" name="search" required minlength="1" placeholder="Typ hier uw verzoek...">
-      <button id="searchBtn" type="submit">&#128269;</button>
-    </fieldset>
-  </form>
-
-  <article class="results">
-    <h2>Re sultaten</h2>
-    <section id="loader" class="loader"></section>
-    <section id="wrapper">
-<% if (data !== null){ %>
-<% data.forEach(function(item){%>
-      <article>
-      <div>
-      <img src="<%=item.cover_image%>" alt="<%=item.title%>">
-      <button class="addButton" id="<%=item.isbn%>">+</button>
-      </div>
-      <div>
-      <span><%=item.title%></span>
-      <span><%=item.author%></span>
-      <p class="bio"><%=item.description%></p>
-      </div>
-      </article>
-<%}); %>
-<% } %>
-<% if (data !== null){ %>
-<% data.forEach(function(item){%>
-      <article>
-      <div>
-      <img src="<%=item.cover_image%>" alt="<%=item.title%>">
-      <button class="addButton" id="<%=item.isbn%>">+</button>
-      </div>
-      <div>
-      <span><%=item.title%></span>
-      <span><%=item.author%></span>
-      <p class="bio"><%=item.description%></p>
-      </div>
-      </article>
-<%}); %>
-<% } %>
-
-    </section>
-  </article>
-
-  <section id="selectCount" class="selectCount">
-  </section>
-
-  <section class="selected" id="selected">
-    <h2>Jouw selectie</h2>
-    <section id="selectedCollection" class="selectedCollection"></section>
-  </section>
-
-
   <% include ../partials/footer %>
 </body>
 
