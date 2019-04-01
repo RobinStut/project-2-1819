@@ -12,15 +12,18 @@ Op maandag 1 april is er een briefing gegeven over de website van ![CMD amsterda
 Afbeeldingen worden allemaal ingeladen, zonder dat ze al te zien zijn. Hierdoor wordt er langer geladen.
 </pre>
 
+<hr>
 ![nolabel](nolabel.png) ![pbutton](pbutton.png)
 
 <pre> Labels zijn niet gekoppeld aan de input velden, waardoor screenreaders moeite hebben met invullen. Ook buttons worden door screenreaders herkent als normale tekst.
 </pre>
+<hr>
 
 ![button](button.png)
 
  <pre>De belangrijkste knop op de pagina's zijn alleen zichtbaar als er nog niet gescrolled is.
  </pre>
+<hr>
 
 ![audits](audits.png)
 
