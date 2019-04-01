@@ -13,7 +13,9 @@ Afbeeldingen worden allemaal ingeladen, zonder dat ze al te zien zijn. Hierdoor 
 </pre>
 
 <hr>
-![nolabel](nolabel.png) ![pbutton](pbutton.png)
+
+![nolabel](nolabel.png)
+![pbutton](pbutton.png)
 
 <pre> Labels zijn niet gekoppeld aan de input velden, waardoor screenreaders moeite hebben met invullen. Ook buttons worden door screenreaders herkent als normale tekst.
 </pre>
