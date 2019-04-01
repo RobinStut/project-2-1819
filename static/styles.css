@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  max-width: 450px;
+}
+
+nav {
+  background-color: #4a4a4a;
+  height: 4rem;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem 0 2rem;
+}
