@@ -32,37 +32,4 @@ app.get("/", (req, res) =>
   })
 );
 
-app.post("/", function(req, res) {
-  var search = req.body.search;
-  // console.log("Search value ", search);
-  var dataGet = datafetch(search);
-  dataGet
-    .then(function(res2) {
-      // console.log("res" + res);
-      var data = res2.data;
-
-      return data
-        .map(function(item) {
-          var titleSplit = item.title.split(" ");
-          // console.log(titleSplit);
-          titleSplit.includes(search);
-          if (titleSplit.includes(search) === true) {
-            // console.log(item);
-            return item;
-          }
-        })
-        .filter(valueCheck);
-
-      function valueCheck(value) {
-        return value !== undefined;
-      }
-    })
-    .then(transformedRes => {
-      console.log("62 " + transformedRes);
-      res.render("pages/lijstSamenstellen", {
-        data: transformedRes
-      });
-    });
-});
-
 app.listen(process.env.PORT || 3000);
