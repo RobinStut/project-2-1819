@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background-color: #fff021;
 }
 
 a,
@@ -18,7 +19,7 @@ input {
 }
 
 nav {
-  background-color: rgba(255, 255, 255, 100);
+  background-color: #fff021;
   -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.22);
   height: 4rem;
   align-items: center;
@@ -41,13 +42,13 @@ nav a {
 
 div {
   height: auto !important;
-  margin: 1rem;
+  /* margin: 1rem; */
 }
 
 input,
 textarea {
   padding: 10px;
-  width: 100%;
+  width: auto;
   border: 0px;
   border-bottom: 1px solid #fff;
   font-weight: 400;
@@ -92,39 +93,64 @@ input[type="submit"] {
   -moz-transition: border-color 0.2s linear, background-color 0.2s linear;
   -o-transition: border-color 0.2s linear, background-color 0.2s linear;
   -webkit-transition: border-color 0.2s linear, background-color 0.2s linear;
+  width: fit-content;
 }
 
 .contact {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto auto auto;
+  column-gap: 10px;
+  padding: 1rem;
 }
 
-.section-title:nth-of-type(1) {
+.contact div {
+  /* margin: 1rem; */
+}
+
+.contact .section-title:nth-of-type(1) {
   grid-column-start: 1;
   grid-column-end: 5;
   grid-row-start: 1;
   grid-row-end: 2;
 }
 
-.section-title :nth-of-type(2n) {
+.contact .section-title :nth-of-type(2n) {
   grid-column-start: 1;
   grid-column-end: 5;
   grid-row-start: 3;
   grid-row-end: 4;
 }
-.span_6 {
+.contact .span_6 {
   grid-column-start: 1;
   grid-column-end: 3;
   grid-row-start: 2;
   grid-row-end: 3;
 }
-.span_6.col_last {
+.contact .span_6.col_last {
   grid-column-start: 3;
   grid-column-end: 5;
   grid-row-start: 2;
   grid-row-end: 3;
 }
+
+.contact .span_12.section-title:first-of-type {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.contact .span_12.section-title {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+.contact .span_3 {
+}
+
 p {
   grid-column-start: 3;
   grid-column-end: 5;
@@ -134,4 +160,68 @@ p {
 
 iframe {
   max-width: 100%;
+}
+
+.team-member {
+  margin: 0;
+}
+
+.team-member img {
+  width: 100%;
+}
+
+.team-member h4 {
+  font-size: 22px;
+  font-weight: 300;
+  margin: 0;
+}
+
+.team-member div {
+  font-weight: 400;
+  font-size: 16px;
+  margin: 0;
+}
+
+.team-member ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.team-member a {
+  color: #00a1ff;
+  font-size: 11px;
+}
+
+body:nth-of-type(1) h2 {
+  background-color: black;
+  color: white;
+  padding: 0.5rem;
+  width: fit-content;
+}
+
+.first-section {
+}
+
+.swiper-slide {
+  height: 600px !important;
+}
+
+.image-bg {
+  padding-bottom: 66.66%;
+  position: absolute;
+  width: 100vw;
+}
+
+.swiper-slide .container {
+  position: absolute;
+  bottom: 4rem;
+  left: 4rem;
+}
+
+form p {
+}
+
+text {
+  font-family: fantasy;
 }

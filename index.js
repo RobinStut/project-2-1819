@@ -52,7 +52,7 @@ app.get("/samenwerken", (req, res) => {
 
       response.on("data", buffer => (data += buffer));
       response.on("end", () => {
-        console.log(logic(data));
+        // console.log(logic(data));
         res.render("pages/index", {
           data: logic(data)[0],
           path: logic(data)[1]
@@ -76,7 +76,7 @@ app.get("/contact", (req, res) => {
 });
 
 function logic(data) {
-  const html = JSON.parse(data).content.rendered;
+  let html = JSON.parse(data).content.rendered;
   const path = JSON.parse(data).slug;
 
   // Selects all the: [full-width] bs
@@ -90,21 +90,36 @@ function logic(data) {
 
   const minifiedHtml = normalHtml.replace(rx2, "");
 
-  let smallerHtml = removeEmpty(minifiedHtml);
+  html = removeEmpty(html);
+  html = createHeadings(html);
+  html = standalones(html);
+  html = makeLabels(html);
+  html = makeUlLi(html);
+  html = removeBr(html);
+  html = lazyload(html);
+  html = removeBrackets(html);
+  html = breakTag(html);
+  html = removeDiv(html);
+  // html = divCheck(html);
+  // html = finalCleaner(html);
+
   // console.log(smallerHtml);
-  return [smallerHtml, path];
+  return [html, path];
 }
 
 function removeEmpty(html) {
-  const rx = /\<(\w+?).[^\<]*\>(?:[\s\t])*\<\/\1\>/g;
+  const rx = /\<(\w+?)(?:.[^\<]*)?\>(?:[\s\t])*\<\/\1\>/g;
+  const bgImageRx = /\<(?:div|span).*?(background-image).*?\>/;
 
   let tmp = 0;
 
   const newHtml = html.replace(rx, (...arg) => {
     const fullMatch = arg[0];
     const group = arg[1];
-
+    // console.log(fullMatch)
     if (["iframe", "textarea"].includes(group)) {
+      return fullMatch;
+    } else if (bgImageRx.test(fullMatch)) {
       return fullMatch;
     } else {
       tmp++;
@@ -113,7 +128,7 @@ function removeEmpty(html) {
   });
 
   if (tmp > 0) {
-    console.log("yes");
+    // console.log("yes");
     return removeEmpty(newHtml);
   } else {
     return newHtml;
@@ -155,26 +170,119 @@ function makeUlLi(html) {
 
 function makeLabels(html) {
   // console.log(html)
-  // const rx = /\<(p)\>(.*)(\<br\s*\/\>).*(input|textarea|select).*\<\/?(\1)\>/g;
+  const rx = /\<(p)\>(.*)(\<br\s*\/\>).*(input|textarea|select).*\<\/?(\1)\>/g;
   const allPsRx = /(\<p\s*(?:.[^\<p])*\>).+?(\<\/p\>)/g;
-  // const inputTextareaRx = //g
+  const hasInputRx = /\<(input|textarea|select)/;
+  const getP = /(?<=\<{1}\/?)p/g;
+
   let result;
 
-  while ((result = allPsRx.exec(html)) !== null) {
-    // console.log(result[0], "\n")
-  }
+  html = html.replace(allPsRx, (...args) => {
+    if (hasInputRx.test(args[0])) {
+      return args[0].replace(getP, "label");
+    } else {
+      return args[0];
+    }
+    // if (hasInputRx.test)
+  });
+  // console.log(html)
+  return html;
+}
 
-  // html = html.replace(rx, (...args) => {
-  //   console.log("test")
-  //   let match = args[0];
-  //   const firstP = args[1];
-  //   const content = args[2];
-  //   const br = args[3];
-  //   const inputType = args[4];
-  //   const lastP = args[5];
-  //
-  //   // console.log(content, inputType)
-  // })
+function createHeadings(html) {
+  const nectarDropcaps = /\<(?:(?:span)\s(?:class="nectar-dropcap")(?:.[^\<\>]*))\>(.[^\<\>]+)*?\<\/(?:span)\>/g;
+
+  return html.replace(nectarDropcaps, (...arg) => `<h2>${arg[1]}</h2>`);
+}
+
+function lazyload(html) {
+  const allImg = /(\<img\s*)([\w\s-="%:/.]*)(>)/g;
+  const allSrc = /(src=")([\w\s:/._-]*)(")/g;
+  let result;
+  let i = 0;
+  // while ((result = allImg.exec(html)) !== null) {
+  // console.log(result[0]);
+
+  let tst = html.replace(allImg, (...x) => {
+    if (i > 0) {
+      const im = x[0].replace(allSrc, (...arg) => {
+        return `class="lazy" ${arg[1]}" data-src="${arg[2]}"`;
+      });
+      // console.log(im);
+      return `<picture>${im}</picture>`;
+    } else {
+      i++;
+      return x[0];
+    }
+  });
+  // console.log(tst);
+
+  return tst;
+  // }
+  // console.log(result);
+}
+
+function divCheck(html) {
+  const allDivClasses = /(<div\s)([\w\d\s="#:;-]*)(class=")([\w\d\s-_]*)(")/g;
+
+  let result;
+
+  while ((result = allDivClasses.exec(html)) !== null) {
+    console.log(result[4]);
+  }
+}
+
+function standalones(html) {
+  const rx = /(<\/div>*)([\w\d\+]+[\s\w\d\W][^<]*)(<[\/\w\d]*>)/g;
+
+  return html.replace(rx, (...arg) => `<p class="clDiv">${arg[2]}</p>`);
+}
+
+function removeBr(html) {
+  const rx = /\<br\s*\/\>/g;
+
+  return html.replace(rx, "");
+}
+
+function removeBrackets(html) {
+  const rx = /(\[)([^\]]*)(\])/g;
+
+  return html.replace(rx, "");
+}
+
+function finalCleaner(html) {
+  const rx = /\<(div|span).+?\>|\<\/(div|span)\>/g;
+
+  return html.replace(rx, "");
+}
+
+function breakTag(html) {
+  const rx = /(&nbsp;)/g;
+  return html.replace(rx, " ");
+}
+
+function removeDiv(html) {
+  const rx = /(<div)([^>]*)(>\s*)/g;
+  const rx2 = /(<\/div>*)/g;
+  const bgDiv = /(<div)([^>]*)([>]*)(style=")([^>]*)(background-image:\surl[^>]*)(")(>)/g;
+
+  html = html.replace(rx2, "");
+
+  let tst = html.replace(rx, (...x) => {
+    // console.log(x[0]);
+    let check = bgDiv.test(x[0]);
+    if (check === true) {
+      // console.log(x[0]);
+      // console.log(x[0] + "</div>");
+      return `${x[0]}</div>}`;
+    } else {
+      return "";
+    }
+    // console.log(check);
+  });
+  // console.log(tst);
+  return tst;
+  // return html.replace(rx, "");
 }
 
 // https:/ /www.twilio.com/blog/2017/08/http-requests-in-node-js.html
