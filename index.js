@@ -96,10 +96,11 @@ function logic(data) {
   html = removeBrackets(html);
   html = breakTag(html);
   html = removeDiv(html);
-  html = emptyValue(html);
   html = createSection(html);
   html = sectionStructure(html);
   html = createHeadings(html);
+  html = formLabel(html);
+  html = emptyValue(html);
 
   return [html, path];
 }
@@ -286,6 +287,27 @@ function createSection(html) {
   let tst = html.replace(rx, (...x) => {
     return `<section class="beginHeader">${x[1]}${x[2]}</section>${x[3]}`;
   });
+  return tst;
+}
+
+function formLabel(html) {
+  const rx = /(<form)([\w\s\W]*<\/form)/g;
+  const rx2 = /(<p>)/g;
+  const rx3 = /(<\/p>)/g;
+
+  let tst = html.replace(rx, (...x) => {
+    // console.log(x[0]);
+    const p = x[0].replace(rx2, (...arg) => {
+      // console.log(arg[0]);
+      return `<label>`;
+    });
+    const p2 = p.replace(rx3, (...arg) => {
+      // console.log(arg[0]);
+      return `</label>`;
+    });
+    return p2;
+  });
+  // console.log(tst);
   return tst;
 }
 
