@@ -1,14 +1,10 @@
 const express = require("express");
-const fetch = require("node-fetch");
 const bodyParser = require("body-parser");
-const EventEmitter = require("events");
 const compression = require("compression");
 const findCacheDir = require("find-cache-dir");
-const api = require("oba-wrapper/node");
 const app = express();
 const path = require("path");
 const https = require("https");
-const striptags = require("striptags");
 
 findCacheDir({ name: "cmd" });
 
@@ -91,7 +87,7 @@ function logic(data) {
   const minifiedHtml = normalHtml.replace(rx2, "");
 
   html = removeEmpty(html);
-  html = createHeadings(html);
+  html = curlyBracket(html);
   html = standalones(html);
   html = makeLabels(html);
   html = makeUlLi(html);
@@ -100,10 +96,11 @@ function logic(data) {
   html = removeBrackets(html);
   html = breakTag(html);
   html = removeDiv(html);
-  // html = divCheck(html);
-  // html = finalCleaner(html);
+  html = emptyValue(html);
+  html = createSection(html);
+  html = sectionStructure(html);
+  html = createHeadings(html);
 
-  // console.log(smallerHtml);
   return [html, path];
 }
 
@@ -233,7 +230,7 @@ function divCheck(html) {
 }
 
 function standalones(html) {
-  const rx = /(<\/div>*)([\w\d\+]+[\s\w\d\W][^<]*)(<[\/\w\d]*>)/g;
+  const rx = /(<\/div>*|<\/a>*)([\w\d\+]+[\s\w\d\W][^<]*)(<[\/\w\d]*>)/g;
 
   return html.replace(rx, (...arg) => `<p class="clDiv">${arg[2]}</p>`);
 }
@@ -259,6 +256,64 @@ function finalCleaner(html) {
 function breakTag(html) {
   const rx = /(&nbsp;)/g;
   return html.replace(rx, " ");
+}
+
+function curlyBracket(html) {
+  const rx = /(})*/g;
+  return html.replace(rx, "");
+}
+
+function emptyValue(html) {
+  const rx = /(<\/[^>]*>)([\w][^<]*)/g;
+  const rx2 = /(<\/a>\s*)([\.]|[\w])([^<]*)/g;
+  let tst = html.replace(rx, (...x) => {
+    // console.log(x[2]);
+    return `<p>${x[2]}</p>`;
+  });
+
+  let tst2 = tst.replace(rx2, (...x) => {
+    // console.log(x[0]);
+    return `${x[1]}<p>${x[2]}${x[3]}</p>`;
+  });
+  // console.log(tst2);
+  // console.log(tst);
+  return tst2;
+}
+
+function createSection(html) {
+  // console.log("createSection");
+  const rx = /(<div)([\s\w\d="\-:()@:/.;><}]*)(<!--\/container)/g;
+  let tst = html.replace(rx, (...x) => {
+    return `<section class="beginHeader">${x[1]}${x[2]}</section>${x[3]}`;
+  });
+  return tst;
+}
+
+function sectionStructure(html) {
+  const rx = /(<span)([\w\s"=]*)(nectar-dropcap*)/g;
+  const rx2 = /([^±]*$)/g;
+  let i = 0;
+  let tst = html.replace(rx, (...x) => {
+    if (i === 0) {
+      i++;
+      return `<section>${x[0]}`;
+    }
+    if (i > 0 && i < x.length) {
+      i++;
+      return `</section><section>${x[0]}`;
+    }
+    if (i === x.length) {
+      i++;
+      return `</section><section>" + ${x[0]}`;
+    }
+  });
+  let tst2 = tst.replace(rx2, (...x) => {
+    // console.log("tst2");
+    // console.log(x[0]);
+    return `${x[0]}</section>`;
+  });
+  // console.log(tst2);
+  return tst2;
 }
 
 function removeDiv(html) {
