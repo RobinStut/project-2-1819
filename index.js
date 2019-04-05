@@ -318,15 +318,15 @@ function sectionStructure(html) {
   let tst = html.replace(rx, (...x) => {
     if (i === 0) {
       i++;
-      return `<section>${x[0]}`;
+      return `<section class="content ct${i}">${x[0]}`;
     }
     if (i > 0 && i < x.length) {
       i++;
-      return `</section><section>${x[0]}`;
+      return `</section><section class="content ct${i}">${x[0]}`;
     }
     if (i === x.length) {
       i++;
-      return `</section><section>" + ${x[0]}`;
+      return `</section><section class="content ct${i}">" + ${x[0]}`;
     }
   });
   let tst2 = tst.replace(rx2, (...x) => {
