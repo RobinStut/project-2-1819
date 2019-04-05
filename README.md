@@ -73,7 +73,8 @@ De performance van mijn prototype:
 
 [Website prototype](http://p2stut.herokuapp.com)
 
-![]()
+![proto1](proto1.png)
+![proto2](proto2.png)
 
 In samenwerking met:
 
